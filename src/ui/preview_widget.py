@@ -59,12 +59,13 @@ class PreviewWidget(QWidget):
         """设置要显示的图片
         
         Args:
-            image: 可以是QPixmap、QImage对象或文件路径
+            image: 可以是QPixmap、QImage对象、PIL Image对象或文件路径
         """
         # 存储当前图片
         self.current_image = image
         
         # 转换为QPixmap对象
+        pixmap = None
         if isinstance(image, str):  # 文件路径
             pixmap = QPixmap(image)
         elif isinstance(image, QImage):
@@ -72,7 +73,72 @@ class PreviewWidget(QWidget):
         elif isinstance(image, QPixmap):
             pixmap = image
         else:
-            pixmap = None
+            # 尝试处理PIL Image对象
+            try:
+                # 导入PIL和numpy（用于更可靠的图像转换）
+                from PIL import Image
+                import numpy as np
+                
+                # 确保我们正在处理PIL Image对象
+                if isinstance(image, Image.Image):
+                    print(f"处理PIL Image，模式: {image.mode}, 尺寸: {image.width}x{image.height}")
+                    
+                    # 使用numpy数组作为中间媒介进行转换
+                    try:
+                        # 将PIL图像转换为numpy数组
+                        img_array = np.array(image)
+                        height, width, channels = img_array.shape
+                        
+                        # 根据图像模式选择正确的QImage格式
+                        if image.mode == 'RGBA':
+                            # RGBA模式 - 确保是32位格式
+                            bytes_per_line = 4 * width
+                            qimage = QImage(img_array.data, width, height, bytes_per_line, QImage.Format_RGBA8888)
+                        elif image.mode == 'RGB':
+                            # RGB模式 - 确保是24位格式
+                            bytes_per_line = 3 * width
+                            qimage = QImage(img_array.data, width, height, bytes_per_line, QImage.Format_RGB888)
+                        else:
+                            # 其他模式先转换为RGB
+                            print(f"转换图像模式 {image.mode} 到 RGB")
+                            rgb_image = image.convert('RGB')
+                            rgb_array = np.array(rgb_image)
+                            bytes_per_line = 3 * width
+                            qimage = QImage(rgb_array.data, width, height, bytes_per_line, QImage.Format_RGB888)
+                        
+                        # 转换为QPixmap
+                        pixmap = QPixmap.fromImage(qimage)
+                        print("PIL Image到QPixmap转换成功")
+                    except Exception as numpy_error:
+                        print(f"使用numpy转换失败: {str(numpy_error)}")
+                        # 备用方法：使用tobytes直接转换
+                        if image.mode == 'RGBA':
+                            qimage = QImage(image.tobytes('raw', 'BGRA'), image.width, image.height, QImage.Format_RGBA8888)
+                        elif image.mode == 'RGB':
+                            qimage = QImage(image.tobytes('raw', 'BGR'), image.width, image.height, QImage.Format_RGB888)
+                        else:
+                            rgb_image = image.convert('RGB')
+                            qimage = QImage(rgb_image.tobytes('raw', 'BGR'), rgb_image.width, rgb_image.height, QImage.Format_RGB888)
+                        pixmap = QPixmap.fromImage(qimage)
+                else:
+                    print(f"未知的图片类型: {type(image)}")
+                    pixmap = None
+            except Exception as e:
+                # 更详细的错误处理
+                print(f"PIL Image转换错误: {str(e)}")
+                # 最后的备用方法：保存为临时文件然后加载
+                try:
+                    import tempfile
+                    import os
+                    with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
+                        temp_path = temp_file.name
+                    image.save(temp_path)
+                    pixmap = QPixmap(temp_path)
+                    os.unlink(temp_path)  # 删除临时文件
+                    print("使用临时文件方法转换成功")
+                except Exception as last_resort_error:
+                    print(f"所有转换方法均失败: {str(last_resort_error)}")
+                    pixmap = None
         
         # 显示图片
         if pixmap and not pixmap.isNull():
@@ -82,7 +148,7 @@ class PreviewWidget(QWidget):
             self.image_label.setMinimumSize(10, 10)  # 确保标签可以缩小
         else:
             # 显示占位符
-            self.image_label.setText("无预览图片")
+            self.image_label.setText("请先选择一张图片")
             self.image_label.setPixmap(QPixmap())
             
     def _scale_image(self, pixmap):

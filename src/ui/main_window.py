@@ -411,6 +411,29 @@ class MainWindow(QMainWindow):
                 # 应用水印设置
                 self.watermark.set_text(watermark_text)
                 
+                # 设置字体
+                font_name = self.font_name_label.text()
+                font_size = self.font_size_spinbox.value()
+                font_bold = self.bold_checkbox.isChecked()
+                font_italic = self.italic_checkbox.isChecked()
+                self.watermark.set_font(font_name, font_size, font_bold, font_italic)
+                
+                # 设置颜色和透明度
+                opacity = self.opacity_slider.value()
+                # 从颜色预览的样式表中提取颜色
+                style_sheet = self.color_preview.styleSheet()
+                start = style_sheet.find("rgba(") + 5
+                end = style_sheet.find(")", start)
+                if start > 5 and end > start:
+                    rgba_values = style_sheet[start:end].split(",")
+                    if len(rgba_values) >= 3:
+                        r, g, b = map(int, rgba_values[:3])
+                        self.watermark.set_color(r, g, b, opacity)
+                
+                # 设置旋转角度
+                rotation = self.rotation_slider.value()
+                self.watermark.set_rotation(rotation)
+                
                 # 添加水印到预览图片
                 preview_image = self.watermark.add_watermark(
                     self.image_processor.get_loaded_images()[self.image_processor.current_image_index]

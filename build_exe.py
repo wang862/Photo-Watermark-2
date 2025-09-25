@@ -31,7 +31,7 @@ executables = [
 # 设置cx_Freeze选项
 build_exe_options = {
     "packages": ["os", "sys", "PIL", "PyQt5"],
-    "excludes": ["tkinter"],
+    "excludes": ["tkinter", "PyQt5.QtQml", "PyQt5.QtQuick"],
     "include_files": [
         (os.path.join(current_dir, "src", "resources", "icons"), "icons"),
     ],

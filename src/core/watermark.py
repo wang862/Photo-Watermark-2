@@ -221,10 +221,37 @@ class Watermark:
                     # 旋转临时图像
                     rotated_temp = temp_img.rotate(self.rotation, expand=1)
                     
-                    # 计算在原图上居中放置旋转后水印的位置
+                    # 计算在原图上放置旋转后水印的位置
                     rot_width, rot_height = rotated_temp.size
-                    paste_x = (img.size[0] - rot_width) // 2
-                    paste_y = (img.size[1] - rot_height) // 2
+                    
+                    # 根据用户选择的位置计算粘贴坐标
+                    if isinstance(self.position, tuple) and len(self.position) == 2:
+                        # 手动指定的坐标
+                        paste_x, paste_y = self.position
+                    else:
+                        # 预设位置
+                        img_width, img_height = img.size
+                        if self.position == "top_left":
+                            paste_x, paste_y = 0, 0
+                        elif self.position == "top_center":
+                            paste_x, paste_y = (img_width - rot_width) // 2, 0
+                        elif self.position == "top_right":
+                            paste_x, paste_y = img_width - rot_width, 0
+                        elif self.position == "middle_left":
+                            paste_x, paste_y = 0, (img_height - rot_height) // 2
+                        elif self.position == "center":
+                            paste_x, paste_y = (img_width - rot_width) // 2, (img_height - rot_height) // 2
+                        elif self.position == "middle_right":
+                            paste_x, paste_y = img_width - rot_width, (img_height - rot_height) // 2
+                        elif self.position == "bottom_left":
+                            paste_x, paste_y = 0, img_height - rot_height
+                        elif self.position == "bottom_center":
+                            paste_x, paste_y = (img_width - rot_width) // 2, img_height - rot_height
+                        elif self.position == "bottom_right":
+                            paste_x, paste_y = img_width - rot_width, img_height - rot_height
+                        else:
+                            # 默认居中
+                            paste_x, paste_y = (img_width - rot_width) // 2, (img_height - rot_height) // 2
                     
                     # 将旋转后的水印粘贴到原始大小的水印图像上
                     rotated_watermark.paste(rotated_temp, (paste_x, paste_y), rotated_temp)
