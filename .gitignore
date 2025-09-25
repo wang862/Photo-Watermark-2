@@ -1,104 +1,81 @@
-# C++项目的.gitignore文件
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 
-# 编译输出目录
+# Distribution / packaging
 build/
-Debug/
-Release/
-out/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# 中间文件
-*.obj
-*.o
-*.lo
-*.a
-*.lib
-*.exp
-*.ilk
-*.pdb
-*.idb
-*.pch
-*.suo
-*.sdf
-*.opensdf
-*.VC.db
-*.VC.opendb
+# PyInstaller
+build-exe/
+build_exe/
+*.spec
 
-# 可执行文件
-*.exe
-*.dll
-*.so
-*.dylib
-
-# 临时文件
-*.tmp
-*.temp
-*.log
-*.bak
+# IDEs and editors
+.vscode/
+.idea/
 *.swp
 *.swo
 *~
 
-# 编辑器配置文件
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# 系统文件
-Thumbs.db
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# 环境配置文件
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Logs
+logs
+*.log
 
-# 文档生成目录
-docs/_build/
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# 第三方库
-third_party/
-libs/
-
-# Windows资源文件
-*.rc
-*.res
-
-# MinGW相关文件
-*.gch
-
-# CMake相关文件
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-install_manifest.txt
-CTestTestfile.cmake
-
-# 测试覆盖率文件
-*.gcno
-*.gcda
-*.gcov
+# Coverage directory used by tools like istanbul
 coverage/
+*.lcov
 
-# 性能分析文件
-*.prof
-*.profile
-*.perf
+# nyc test coverage
+.nyc_output
 
-# 国际化文件
-*.mo
-*.po
+# Dependency directories
+node_modules/
+jspm_packages/
 
-# Python虚拟环境
-venv/
-.env/
+# Optional npm cache directory
+.npm
 
-# 其他临时文件
-*.cache/
-*.coverage
-.coverage
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Windows executable
+PhotoWatermark.exe
