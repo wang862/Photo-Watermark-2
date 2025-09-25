@@ -112,7 +112,7 @@ if __name__ == "__main__":
                         "src/main/main.py",
                         base="Win32GUI",  # 使用GUI模式，不显示控制台窗口
                         targetName="PhotoWatermark.exe",
-                        icon="src/resources/icons/app_icon.ico",  # 假设存在这个图标文件
+                        icon="src/resources/icons/app_icon.svg",  # 使用现有的SVG图标文件
                         shortcutName="Photo-Watermark-2",
                         shortcutDir="ProgramMenuFolder",
                     )
