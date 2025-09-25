@@ -1,0 +1,104 @@
+# C++项目的.gitignore文件
+
+# 编译输出目录
+build/
+Debug/
+Release/
+out/
+
+# 中间文件
+*.obj
+*.o
+*.lo
+*.a
+*.lib
+*.exp
+*.ilk
+*.pdb
+*.idb
+*.pch
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# 可执行文件
+*.exe
+*.dll
+*.so
+*.dylib
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+*~
+
+# 编辑器配置文件
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 系统文件
+Thumbs.db
+.DS_Store
+
+# 环境配置文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 文档生成目录
+docs/_build/
+
+# 第三方库
+third_party/
+libs/
+
+# Windows资源文件
+*.rc
+*.res
+
+# MinGW相关文件
+*.gch
+
+# CMake相关文件
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+
+# 测试覆盖率文件
+*.gcno
+*.gcda
+*.gcov
+coverage/
+
+# 性能分析文件
+*.prof
+*.profile
+*.perf
+
+# 国际化文件
+*.mo
+*.po
+
+# Python虚拟环境
+venv/
+.env/
+
+# 其他临时文件
+*.cache/
+*.coverage
+.coverage
